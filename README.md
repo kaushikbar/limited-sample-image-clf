@@ -1,5 +1,6 @@
 # GreyClassifier
 This repository gathers the code for greyscale natural image classification from the [in-class Kaggle challenge](https://www.kaggle.com/c/cs-ioc5008-hw1).
+It builds on the code from [Grey Classifier](https://github.com/kayoyin/GreyClassifier).
 
 ## Getting started
 
