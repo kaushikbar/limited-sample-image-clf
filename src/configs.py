@@ -1,11 +1,12 @@
 LOGGER = "resnet"
 PARAMS = {"eta": 0.05, "max_depth": 1, "min_child_weight": 9, "subsample": 1, "col_sample_by_tree": 1, "objective": "multi:softmax", "num_class": 4} # for XGB model
-EPOCHS = 20
-BATCHSIZE = 64
+EPOCHS = 1 #20
+BATCHSIZE = 4 #64
 BLUR = True
 WEIGHTS_PATH = "weights/resnet18-5c106cde.pth"
 CHECKPOINT_PATH = ""
 TRAIN = True
+DEBUG = True
 NUM_FREEZE_LAYERS = 7
 GREY = False
 IMG_SIZE = 256

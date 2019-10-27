@@ -10,7 +10,6 @@ from src.configs import *
 import os
 from collections import Counter
 
-
 class TrainDataset(Dataset):
     def __init__(self, path, grey=False, subclass=SUBCLASS):
         assert isinstance(path, str)

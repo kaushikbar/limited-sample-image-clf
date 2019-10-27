@@ -130,25 +130,27 @@ if __name__ == "__main__":
 
     dataset_trn = TrainDataset("data/train/", grey=GREY)
     dataset_trn.resample()
-    dataset_trn.augment()
-    dataset_trn.augment(first=False)
+    if not DEBUG:
+        dataset_trn.augment()
+        dataset_trn.augment(first=False)
     dataset_val = TrainDataset("datasplit/val/", grey=GREY)
     logger.info("{} training samples, {} validation samples".format(len(dataset_trn), len(dataset_val)))
     dataloaders_dict = {"train": DataLoader(dataset=dataset_trn, batch_size=BATCHSIZE), "val": DataLoader(dataset=dataset_val, batch_size=BATCHSIZE)}
     num_classes = len(dataset_trn.counter.keys())
 
-    model_ft, input_size = initialize_model(num_channels=num_channels, num_classes=num_classes)
-    if len(CHECKPOINT_PATH) > 0:
-        model_ft.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=torch.device(device)))
-    model_ft = model_ft.to(device).double()
+    if not DEBUG:
+        model_ft, input_size = initialize_model(num_channels=num_channels, num_classes=num_classes)
+        if len(CHECKPOINT_PATH) > 0:
+            model_ft.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=torch.device(device)))
+        model_ft = model_ft.to(device).double()
 
-    optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9, weight_decay=1e-3)
-    scheduler = CosineAnnealingLR_with_Restart(optimizer_ft, T_max=4, T_mult=1.5, model=model_ft, out_dir=LOGGER, take_snapshot=True, eta_min=1e-6)
+        optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9, weight_decay=1e-3)
+        scheduler = CosineAnnealingLR_with_Restart(optimizer_ft, T_max=4, T_mult=1.5, model=model_ft, out_dir=LOGGER, take_snapshot=True, eta_min=1e-6)
 
-    criterion = nn.CrossEntropyLoss()
+        criterion = nn.CrossEntropyLoss()
 
-    model_ft, hist = train_model(
-        model_ft, dataloaders_dict, criterion, optimizer_ft, scheduler, num_epochs=EPOCHS)
+        model_ft, hist = train_model(
+            model_ft, dataloaders_dict, criterion, optimizer_ft, scheduler, num_epochs=EPOCHS)
 
 
     checkpoints = sorted(glob.glob(LOGGER + "/*.tar"))
@@ -159,8 +161,9 @@ if __name__ == "__main__":
 
     xgb_trn = TrainDataset("data/train/", grey=GREY, subclass=SUBCLASS)
     xgb_trn.resample()
-    xgb_trn.augment()
-    xgb_trn.augment(first=False)
+    if not DEBUG:
+        xgb_trn.augment()
+        xgb_trn.augment(first=False)
     xgb_val = TrainDataset("datasplit/val/", grey=GREY, subclass=SUBCLASS)
 
     get_base_predictions_model(xgb_trn, "xgbdata/" + LOGGER + "_train.csv", models)

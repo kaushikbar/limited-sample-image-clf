@@ -8,3 +8,7 @@ logs/
 __pycache__/
 blur/
 datasplit/
+
+resnet/
+xgbdata/
+.idea/
